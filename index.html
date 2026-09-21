@@ -68,9 +68,15 @@
       margin-top: 15px;
     }
     #etiqueta-fase {
-      font-size: 14px;
-      color: #777;
-      margin-bottom: -10px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #b8860b;
+      background-color: #fff8e1;
+      border: 2px solid #b8860b;
+      border-radius: 8px;
+      padding: 10px 20px;
+      display: inline-block;
+      margin-bottom: 20px;
     }
   </style>
 </head>
@@ -140,6 +146,16 @@
     </div>
   </div>
 
+  <!-- PANTALLA 4.5: Transición de práctica a ensayos reales -->
+  <div class="pantalla" id="pantalla-transicion">
+    <div class="caja-texto">
+      <h1>¡Práctica terminada!</h1>
+      <p>A partir de este momento, tus respuestas <strong>sí contarán</strong> para los resultados del estudio.</p>
+      <p>Cuando estés listo, haz clic en el botón para comenzar los ensayos reales.</p>
+    </div>
+    <button class="boton-principal" id="btn-comenzar-real">COMENZAR ENSAYOS REALES</button>
+  </div>
+
   <!-- PANTALLA 5: Cierre y debriefing -->
   <div class="pantalla" id="pantalla-cierre">
     <div class="caja-texto">
@@ -180,6 +196,12 @@
       iniciarPractica();
     });
 
+    // Botón de la pantalla de transición
+    document.getElementById('btn-comenzar-real').addEventListener('click', function() {
+      mostrarPantalla('pantalla-ensayo');
+      iniciarExperimental();
+    });
+
     // ---------- Lógica de ensayos (práctica + experimental) ----------
     let montosPractica = [520, 1200];
     let montosExperimentales = [700, 850, 550, 1000];
@@ -188,7 +210,7 @@
     let indiceActual = 0;
     let tiempoInicio;
 
-    let datosRecolectados = []; // aquí se guardan SOLO los ensayos reales
+    let datosRecolectados = [];
 
     function iniciarPractica() {
       enPractica = true;
@@ -201,7 +223,7 @@
     function iniciarExperimental() {
       enPractica = false;
       indiceActual = 0;
-      document.getElementById('etiqueta-fase').textContent = '';
+      document.getElementById('etiqueta-fase').textContent = 'Ensayo real';
       document.getElementById('montoB').textContent = montosExperimentales[indiceActual];
       tiempoInicio = Date.now();
     }
@@ -211,7 +233,6 @@
       let tiempoRespuesta = tiempoFin - tiempoInicio;
 
       if (enPractica) {
-        // Ensayo de práctica: NO se guarda, solo mostramos en consola para verificar
         console.log("[PRÁCTICA] Monto: $" + montosPractica[indiceActual] + " | Eligió: " + opcion + " | Tiempo: " + tiempoRespuesta + " ms");
 
         indiceActual = indiceActual + 1;
@@ -220,12 +241,11 @@
           document.getElementById('montoB').textContent = montosPractica[indiceActual];
           tiempoInicio = Date.now();
         } else {
-          // Se acabó la práctica, pasamos a los ensayos reales
-          iniciarExperimental();
+          // Se acabó la práctica: mostramos la pantalla de transición (ya NO empieza automático)
+          mostrarPantalla('pantalla-transicion');
         }
 
       } else {
-        // Ensayo experimental: SÍ se guarda
         let registro = {
           participante: codigoParticipante,
           ensayo: indiceActual + 1,
@@ -243,7 +263,6 @@
           document.getElementById('montoB').textContent = montosExperimentales[indiceActual];
           tiempoInicio = Date.now();
         } else {
-          // Se acabaron los ensayos reales: mostramos el cierre
           mostrarPantalla('pantalla-cierre');
           console.log("Datos completos recolectados:", datosRecolectados);
         }
@@ -258,22 +277,18 @@
       elegirOpcion('B');
     });
 
-    // ---------- Exportación a CSV (la programamos completa en el siguiente paso) ----------
-        document.getElementById('btn-descargar').addEventListener('click', function() {
-      // 1. Encabezados de las columnas (deben coincidir con tu diccionario de datos)
+    // ---------- Exportación a CSV ----------
+    document.getElementById('btn-descargar').addEventListener('click', function() {
       let encabezados = ['participante', 'ensayo', 'monto_futuro', 'eleccion', 'tiempo_respuesta_ms'];
 
-      // 2. Convertimos cada objeto del array en una línea de texto separada por comas
       let filas = datosRecolectados.map(function(registro) {
         return encabezados.map(function(campo) {
           return registro[campo];
         }).join(',');
       });
 
-      // 3. Unimos encabezados + filas en un solo texto, separado por saltos de línea
       let contenidoCSV = encabezados.join(',') + '\n' + filas.join('\n');
 
-      // 4. Creamos un archivo temporal en memoria y lo descargamos
       let blob = new Blob([contenidoCSV], { type: 'text/csv;charset=utf-8;' });
       let url = URL.createObjectURL(blob);
       let enlace = document.createElement('a');
