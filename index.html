@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tarea de Descuento Temporal</title>
   <style>
     body {
@@ -10,7 +11,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
       padding: 20px;
       box-sizing: border-box;
@@ -85,13 +86,20 @@
     #etiqueta-fase {
       font-size: 22px;
       font-weight: bold;
-      color: #1f2d10;
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35); /* sombra suave para que la letra blanca se lea sobre el verde */
       background-color: #91AC67;
       border: 2px solid #91AC67;
       border-radius: 8px;
       padding: 10px 20px;
       display: inline-block;
       margin-bottom: 20px;
+    }
+    @media (max-width: 600px) {
+      .opciones { gap: 12px; }
+      .opcion { padding: 20px 14px; }
+      .caja-texto { padding: 16px 18px; }
+      #etiqueta-fase { font-size: 18px; }
     }
   </style>
 </head>
@@ -149,7 +157,7 @@
     <div class="opciones">
       <div class="opcion">
         <h2>OPCIÓN A</h2>
-        <p>$500 MXN</p>
+        <p>$<span id="montoA">500</span> MXN</p>
         <p>HOY</p>
         <button>ELEGIR A</button>
       </div>
@@ -224,7 +232,11 @@
     });
 
     // ---------- Lógica de ensayos (práctica + experimental) ----------
-    let montosPractica = [520, 1200];
+    // Práctica: misma Opción A ($500 hoy) que en los ensayos reales; B con $520 y $1,200.
+    let montosPractica = [
+      { inmediato: 500, demorado: 520 },
+      { inmediato: 500, demorado: 1200 }
+    ];
     // Orden fijo pseudoaleatorio (alterna montos bajos y altos, sin patrón ascendente ni descendente)
     let montosExperimentales = [550, 800, 650, 900, 600, 750, 1000, 700, 950, 850];
 
@@ -245,11 +257,23 @@
       document.getElementById('etiqueta-fase').textContent = texto;
     }
 
+    // Muestra en pantalla los montos del ensayo de práctica actual
+    function mostrarMontosPractica() {
+      document.getElementById('montoA').textContent = montosPractica[indiceActual].inmediato;
+      document.getElementById('montoB').textContent = montosPractica[indiceActual].demorado;
+    }
+
+    // Muestra en pantalla los montos del ensayo real actual (A siempre es $500)
+    function mostrarMontosExperimentales() {
+      document.getElementById('montoA').textContent = 500;
+      document.getElementById('montoB').textContent = montosExperimentales[indiceActual];
+    }
+
     function iniciarPractica() {
       enPractica = true;
       indiceActual = 0;
       actualizarEtiqueta();
-      document.getElementById('montoB').textContent = montosPractica[indiceActual];
+      mostrarMontosPractica();
       tiempoInicio = Date.now();
     }
 
@@ -257,7 +281,7 @@
       enPractica = false;
       indiceActual = 0;
       actualizarEtiqueta();
-      document.getElementById('montoB').textContent = montosExperimentales[indiceActual];
+      mostrarMontosExperimentales();
       tiempoInicio = Date.now();
     }
 
@@ -266,13 +290,13 @@
       let tiempoRespuesta = tiempoFin - tiempoInicio;
 
       if (enPractica) {
-        console.log("[PRÁCTICA] Monto: $" + montosPractica[indiceActual] + " | Eligió: " + opcion + " | Tiempo: " + tiempoRespuesta + " ms");
+        console.log("[PRÁCTICA] A: $" + montosPractica[indiceActual].inmediato + " | B: $" + montosPractica[indiceActual].demorado + " | Eligió: " + opcion + " | Tiempo: " + tiempoRespuesta + " ms");
 
         indiceActual = indiceActual + 1;
 
         if (indiceActual < montosPractica.length) {
           actualizarEtiqueta();
-          document.getElementById('montoB').textContent = montosPractica[indiceActual];
+          mostrarMontosPractica();
           tiempoInicio = Date.now();
         } else {
           // Se acabó la práctica: mostramos la pantalla de transición
@@ -295,7 +319,7 @@
 
         if (indiceActual < montosExperimentales.length) {
           actualizarEtiqueta();
-          document.getElementById('montoB').textContent = montosExperimentales[indiceActual];
+          mostrarMontosExperimentales();
           tiempoInicio = Date.now();
         } else {
           mostrarPantalla('pantalla-cierre');
