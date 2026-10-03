@@ -37,6 +37,10 @@
     }
     .opcion h2 {
       margin: 0 0 10px 0;
+      color: #006199; /* azul del texto de las opciones */
+    }
+    .opcion p {
+      color: #006199; /* azul del texto de las opciones */
     }
     .opcion button {
       margin-top: 20px;
@@ -50,6 +54,16 @@
       padding: 20px 30px;
       border-radius: 10px;
       border: 2px solid #333;
+    }
+    /* Títulos en azul (Consentimiento, Identificación, Instrucciones, Gracias) */
+    .titulo-azul {
+      color: #425B9A;
+    }
+    /* Palabra "Importante" en Instrucciones */
+    .importante {
+      font-weight: bold;
+      font-size: 20px;
+      margin: 20px 0 4px 0;
     }
     .boton-principal {
       margin-top: 20px;
@@ -67,12 +81,13 @@
       width: 200px;
       margin-top: 15px;
     }
+    /* Recuadro verde: "Ensayo de práctica 1 de 2" / "Ensayo real 1 de 10" */
     #etiqueta-fase {
       font-size: 22px;
       font-weight: bold;
-      color: #b8860b;
-      background-color: #fff8e1;
-      border: 2px solid #b8860b;
+      color: #1f2d10;
+      background-color: #91AC67;
+      border: 2px solid #91AC67;
       border-radius: 8px;
       padding: 10px 20px;
       display: inline-block;
@@ -85,17 +100,17 @@
   <!-- PANTALLA 1: Consentimiento informado -->
   <div class="pantalla activa" id="pantalla-consentimiento">
     <div class="caja-texto">
-      <h1>Consentimiento informado</h1>
-      <p>Esta actividad es parte de un ejercicio académico sobre toma de decisiones económicas a lo largo del tiempo. Tiene una duración aproximada de 2 a 3 minutos.</p>
+      <h1 class="titulo-azul">Consentimiento informado</h1>
+      <p>Esta actividad es parte de un ejercicio académico sobre toma de decisiones económicas a lo largo del tiempo. Tiene una <strong>duración</strong> aproximada de 3 a 5 minutos.</p>
       <p>En cada pantalla se te presentarán dos opciones de dinero y deberás elegir la que prefieras.</p>
       <p>Es importante que sepas que:</p>
       <ul>
         <li>Los montos presentados son <strong>hipotéticos</strong>: no recibirás dinero real, independientemente de tu elección.</li>
         <li>Tu participación es <strong>voluntaria</strong> y puedes abandonar la actividad en cualquier momento sin ninguna consecuencia.</li>
-        <li>Tus respuestas se registrarán de forma <strong>anónima y confidencial</strong>, y se usarán únicamente con fines académicos.</li>
+        <li>Tus respuestas se registrarán de forma <strong>anónima y confidencial</strong>, se almacenarán en línea y se usarán únicamente con fines académicos.</li>
         <li>No hay respuestas correctas o incorrectas.</li>
       </ul>
-      <p>Si estás de acuerdo con estas condiciones, haz clic en "Acepto participar" para comenzar.</p>
+      <p>Si estás de acuerdo con estas condiciones, haz clic en <em>"Acepto participar"</em> para comenzar.</p>
     </div>
     <button class="boton-principal" id="btn-acepto">ACEPTO PARTICIPAR</button>
   </div>
@@ -103,7 +118,7 @@
   <!-- PANTALLA 2: Identificación del participante -->
   <div class="pantalla" id="pantalla-identificacion">
     <div class="caja-texto">
-      <h1>Identificación</h1>
+      <h1 class="titulo-azul">Identificación</h1>
       <p>A continuación ingresa tu código de participante, por favor (es el código que te fue asignado al momento de enviarte el link).</p>
       <input type="text" id="input-participante" placeholder="Ej. P001">
     </div>
@@ -114,21 +129,22 @@
   <!-- PANTALLA 3: Instrucciones generales -->
   <div class="pantalla" id="pantalla-instrucciones">
     <div class="caja-texto">
-      <h1>Instrucciones</h1>
+      <h1 class="titulo-azul">Instrucciones</h1>
       <p>A continuación se mostrarán diferentes pantallas que mostrarán dos opciones de dinero:</p>
       <ul>
         <li><strong>Opción A:</strong> una cantidad de dinero disponible <strong>hoy</strong>.</li>
         <li><strong>Opción B:</strong> una cantidad mayor, disponible <strong>en un mes</strong>.</li>
       </ul>
-      <p>Elige la opción que sea de tu preferencia. No hay límite de tiempo para responder.</p>
-      <p>Antes de comenzar, se te realizarán 2 ensayos de práctica para que puedas familiarizarte con la tarea. Estos ensayos no contarán en tus resultados.</p>
+      <p>Elige la opción que sea de tu preferencia. No hay límite de tiempo para responder. Cada pantalla es una decisión nueva e independiente, así que fíjate bien en cada una de las opciones.</p>
+      <p class="importante">Importante</p>
+      <p style="margin-top: 0;">Antes de comenzar, se te realizarán 2 ensayos de práctica para que puedas familiarizarte con la tarea. Estos ensayos no contarán en tus resultados.</p>
     </div>
     <button class="boton-principal" id="btn-instrucciones">COMENZAR PRÁCTICA</button>
   </div>
 
   <!-- PANTALLA 4: Ensayos (práctica y reales usan la misma pantalla) -->
   <div class="pantalla" id="pantalla-ensayo">
-    <p id="etiqueta-fase">Ensayo de práctica</p>
+    <p id="etiqueta-fase">Ensayo de práctica 1 de 2</p>
     <h1>Elige la opción que prefieras:</h1>
     <div class="opciones">
       <div class="opcion">
@@ -159,14 +175,19 @@
   <!-- PANTALLA 5: Cierre y debriefing -->
   <div class="pantalla" id="pantalla-cierre">
     <div class="caja-texto">
-      <h1>¡Gracias por participar!</h1>
+      <h1 class="titulo-azul">¡Gracias por participar!</h1>
       <p>Esta actividad formó parte de un estudio sobre <strong>descuento temporal</strong>: la tendencia a preferir una recompensa menor e inmediata sobre una recompensa mayor pero demorada.</p>
-      <p>Puedes descargar tus propios datos de esta sesión si lo deseas.</p>
+      <p>Tus respuestas ya fueron enviadas. Si lo deseas, también puedes descargar una copia de tus datos de esta sesión.</p>
     </div>
     <button class="boton-principal" id="btn-descargar">DESCARGAR MIS DATOS</button>
   </div>
 
   <script>
+    // ---------- CONFIGURACIÓN DEL ENVÍO AUTOMÁTICO ----------
+    // Aquí se pega la URL de tu Apps Script (termina en /exec).
+    // Mientras esté vacía, la tarea funciona igual pero NO envía los datos.
+    const URL_SCRIPT = 'https://script.google.com/macros/s/AKfycbwd7hUPHKyW_4OM0yRNOckyQ9Vac-SBbmQFwNBOtqvbfj_PzjBL7XArfYVtSy-X1cugwQ/exec';
+
     // ---------- Navegación entre pantallas ----------
     function mostrarPantalla(idPantalla) {
       document.querySelectorAll('.pantalla').forEach(function(p) {
@@ -204,7 +225,8 @@
 
     // ---------- Lógica de ensayos (práctica + experimental) ----------
     let montosPractica = [520, 1200];
-    let montosExperimentales = [700, 850, 550, 1000];
+    // Orden fijo pseudoaleatorio (alterna montos bajos y altos, sin patrón ascendente ni descendente)
+    let montosExperimentales = [550, 800, 650, 900, 600, 750, 1000, 700, 950, 850];
 
     let enPractica = true;
     let indiceActual = 0;
@@ -212,10 +234,21 @@
 
     let datosRecolectados = [];
 
+    // Actualiza el recuadro verde: "Ensayo real 3 de 10"
+    function actualizarEtiqueta() {
+      let texto;
+      if (enPractica) {
+        texto = 'Ensayo de práctica ' + (indiceActual + 1) + ' de ' + montosPractica.length;
+      } else {
+        texto = 'Ensayo real ' + (indiceActual + 1) + ' de ' + montosExperimentales.length;
+      }
+      document.getElementById('etiqueta-fase').textContent = texto;
+    }
+
     function iniciarPractica() {
       enPractica = true;
       indiceActual = 0;
-      document.getElementById('etiqueta-fase').textContent = 'Ensayo de práctica';
+      actualizarEtiqueta();
       document.getElementById('montoB').textContent = montosPractica[indiceActual];
       tiempoInicio = Date.now();
     }
@@ -223,7 +256,7 @@
     function iniciarExperimental() {
       enPractica = false;
       indiceActual = 0;
-      document.getElementById('etiqueta-fase').textContent = 'Ensayo real';
+      actualizarEtiqueta();
       document.getElementById('montoB').textContent = montosExperimentales[indiceActual];
       tiempoInicio = Date.now();
     }
@@ -238,10 +271,11 @@
         indiceActual = indiceActual + 1;
 
         if (indiceActual < montosPractica.length) {
+          actualizarEtiqueta();
           document.getElementById('montoB').textContent = montosPractica[indiceActual];
           tiempoInicio = Date.now();
         } else {
-          // Se acabó la práctica: mostramos la pantalla de transición (ya NO empieza automático)
+          // Se acabó la práctica: mostramos la pantalla de transición
           mostrarPantalla('pantalla-transicion');
         }
 
@@ -260,11 +294,13 @@
         indiceActual = indiceActual + 1;
 
         if (indiceActual < montosExperimentales.length) {
+          actualizarEtiqueta();
           document.getElementById('montoB').textContent = montosExperimentales[indiceActual];
           tiempoInicio = Date.now();
         } else {
           mostrarPantalla('pantalla-cierre');
           console.log("Datos completos recolectados:", datosRecolectados);
+          enviarDatos();
         }
       }
     }
@@ -277,7 +313,25 @@
       elegirOpcion('B');
     });
 
-    // ---------- Exportación a CSV ----------
+    // ---------- Envío automático a Google Sheets ----------
+    function enviarDatos() {
+      if (URL_SCRIPT === '') {
+        console.log('URL_SCRIPT vacía: los datos no se enviaron (solo descarga manual).');
+        return;
+      }
+      fetch(URL_SCRIPT, {
+        method: 'POST',
+        mode: 'no-cors', // el navegador no deja leer la respuesta, pero el envío sí se realiza
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(datosRecolectados)
+      }).then(function() {
+        console.log('Datos enviados.');
+      }).catch(function(error) {
+        console.log('No se pudieron enviar los datos:', error);
+      });
+    }
+
+    // ---------- Exportación a CSV (respaldo) ----------
     document.getElementById('btn-descargar').addEventListener('click', function() {
       let encabezados = ['participante', 'ensayo', 'monto_futuro', 'eleccion', 'tiempo_respuesta_ms'];
 
